@@ -1,0 +1,19 @@
+@use "@carbon/react/scss/config" with (
+  $font-path: "@ibm/plex",
+  $use-flexbox-grid: "true"
+);
+@use "@carbon/react";
+@use "../components/PageHeader/_pageHeader.scss";
+@use "../components//CurrencySearch/_currencySearch";
+
+.page-main {
+  display: block;
+}
+.error-msg {
+  display: flex;
+  align-items: flex-end;
+  min-height: 3em;
+  color: red;
+  font-size: 0.9em;
+  text-indent: 1em;
+}
