@@ -1,6 +1,13 @@
 .page-header {
   padding-left: 1rem;
   padding-right: 1rem;
+  .error-msg {
+    position: absolute;
+    bottom: -3rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
   h1 {
     position: static;
     text-align: center;

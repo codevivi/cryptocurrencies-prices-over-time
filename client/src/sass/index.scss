@@ -6,6 +6,11 @@
 @use "../components/PageHeader/_pageHeader.scss";
 @use "../components//CurrencySearch/_currencySearch";
 
+body {
+  background-color: rgba(0, 0, 0, 0.445);
+  background-image: url("../images/subtle-grey.png");
+}
+
 .page-main {
   display: block;
 }
