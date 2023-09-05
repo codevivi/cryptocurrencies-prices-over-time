@@ -2,6 +2,7 @@
   $font-path: "@ibm/plex",
   $use-flexbox-grid: "true"
 );
+
 @use "@carbon/react";
 @use "../components/PageHeader/_pageHeader.scss";
 @use "../components/CurrencySearch/_currencySearch.scss";
