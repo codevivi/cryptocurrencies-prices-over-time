@@ -1,5 +1,7 @@
+import CustomError from "../utils/CustomError.js";
 import { getExchange } from "./externalApis.js";
-const defaultExchange = getExchange("kucoin");
+export const defaultExchangeName = "kucoin";
+const defaultExchange = getExchange(defaultExchangeName);
 let loadedTime = null;
 
 const getPreloadedDefaultExchange = async () => {
@@ -13,6 +15,10 @@ const getPreloadedDefaultExchange = async () => {
       //if want to use other default exchange and getting this error, need to implement other way to get currencies;
       throw new Error("Not not fully implemented to work with all exchanges");
     }
+    const hasOhlcv = defaultExchange.has.fetchOHLCV;
+    if (!hasOhlcv) {
+      throw new Error("Exchange does not support OHLCV data fetch");
+    }
     defaultExchange.currencies = customizeAndSortCurrencies(currencies);
   }
   return defaultExchange;
@@ -22,8 +28,9 @@ function customizeAndSortCurrencies(currencies) {
   let currenciesArr = [];
   for (const curr in currencies) {
     let currency = currencies[curr];
-    currency.name = currency.name.trim(); // one for sure was with spaces around and messed up sorting
-    currenciesArr.push({ id: currency.id, code: currency.code, name: currency.name, displayName: `${currency.name} (${currency.code})` });
+    let name = currency.name || currency.info.coinName || currency.info.fullName || "";
+    name = name.trim(); // one for sure was with spaces around and messed up sorting (in kucoin)
+    currenciesArr.push({ id: currency.id, code: currency.code, name: name, displayName: `${currency.name} (${currency.code})` });
   }
   currenciesArr.sort((a, b) => a.name.localeCompare(b.name));
   return currenciesArr;
