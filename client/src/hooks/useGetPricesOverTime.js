@@ -17,8 +17,8 @@ function useGetPricesOverTime() {
   const [priceData, setPriceData] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
-  const defineReqParamsForPriceData = useCallback((currency, timeframe, searchType) => {
-    setReqParams({ currency: currency, timeframe: timeframe, searchType: searchType });
+  const defineReqParamsForPriceData = useCallback((currency, timeframe, limit, searchType) => {
+    setReqParams({ currency: currency, timeframe: timeframe, limit: limit, searchType: searchType });
   }, []);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function useGetPricesOverTime() {
       return;
     }
     axios
-      .get(url + `?currency=${reqParams.currency}&timeframe=${reqParams.timeframe}&searchType=${reqParams.searchType}`)
+      .get(url + `?currency=${reqParams.currency}&timeframe=${reqParams.timeframe}&limit=${reqParams.limit}&searchType=${reqParams.searchType}`)
       .then((res) => {
         if (res.status === 200) {
           let customizedData = customizeData(res.data.data.chartData, res.data.data.symbol);

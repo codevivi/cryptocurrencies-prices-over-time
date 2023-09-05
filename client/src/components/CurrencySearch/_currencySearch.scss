@@ -42,4 +42,17 @@
       }
     }
   }
+  .slider {
+    width: 100%;
+    min-width: 100%;
+    .cds--slider-container {
+      width: 100%;
+      .cds--slider {
+        width: 100%;
+      }
+      .cds--text-input {
+        min-width: 4.5em;
+      }
+    }
+  }
 }
