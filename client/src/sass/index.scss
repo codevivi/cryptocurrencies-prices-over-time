@@ -4,15 +4,20 @@
 );
 @use "@carbon/react";
 @use "../components/PageHeader/_pageHeader.scss";
-@use "../components//CurrencySearch/_currencySearch";
+@use "../components/CurrencySearch/_currencySearch.scss";
+@use "../components/Chart/_chart.scss";
 
 body {
-  background-color: rgba(0, 0, 0, 0.445);
-  background-image: url("../images/subtle-grey.png");
+  background-color: #262626;
 }
 
+#root {
+  width: 100%;
+}
 .page-main {
   display: block;
+  width: 100%;
+  min-width: 100%;
 }
 .error-msg {
   display: flex;
