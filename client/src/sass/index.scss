@@ -1,18 +1,17 @@
-@use "@carbon/react/scss/config" with (
+@use "@carbon/react" with (
   $font-path: "@ibm/plex"
 );
-
-@use "@carbon/react";
 @use "../components/PageHeader/_pageHeader.scss";
 @use "../components/CurrencySearch/_currencySearch.scss";
 @use "../components/Chart/_chart.scss";
 @use "../components/Info/_info.scss";
 @use "../components/Footer/_footer.scss";
-@use "./vars.scss" as *;
+@use "./_vars.scss" as *;
 
 body {
   position: relative;
   padding-bottom: 3rem;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: $bg;
 }
 

@@ -13,13 +13,6 @@ const errorResponder = (error, req, res, next) => {
     });
   }
 
-  if (error instanceof SyntaxError && error.type === "entity.parse.failed" && error.message.includes("JSON")) {
-    return res.status(400).json({
-      type: "failure",
-      message: "Invalid JSON",
-    });
-  }
-
   res.status(500).json({
     type: "error",
     message: "Server Error",

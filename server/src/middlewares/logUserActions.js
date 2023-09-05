@@ -7,7 +7,6 @@ const logUserActions = async (req, res, next) => {
   if (req.query.currency && req.query.searchType) {
     consoleLogUserActions(req.query.currency, req.query.searchType);
     if (!isDatabase) {
-      console.log("no database");
       return next();
     }
     const dataToSave = new UserActionModel({

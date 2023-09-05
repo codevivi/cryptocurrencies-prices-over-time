@@ -6,7 +6,7 @@ let loadedTime = null;
 
 const getPreloadedDefaultExchange = async () => {
   const now = Date.now();
-  //load markets every hour
+  //load markets every hour (just a random number  to minimize requests);
   if (loadedTime === null || now - loadedTime > 60000 * 60) {
     await defaultExchange.loadMarkets();
     loadedTime = Date.now();
