@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { SERVER_BASE_URL } from "../config";
 import axios from "axios";
 const url = SERVER_BASE_URL + "api/currencies";
-console.log(url);
 
-function useCryptoCurrencies() {
+function useGetCryptoCurrencies() {
   const [cryptoCurrencies, setCryptocurrencies] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   useEffect(() => {
@@ -21,4 +20,4 @@ function useCryptoCurrencies() {
   }, []);
   return [cryptoCurrencies, errorMsg];
 }
-export default useCryptoCurrencies;
+export default useGetCryptoCurrencies;
