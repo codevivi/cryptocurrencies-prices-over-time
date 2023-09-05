@@ -4,12 +4,13 @@ import getPreloadedDefaultExchange from "../externalApis/defaultExchange.js";
 const validatePriceDataQuery = async (req, res, next) => {
   const ex = await getPreloadedDefaultExchange();
   let currency = req.query.currency;
+  let limit = req.query.limit;
   let searchType = req.query.searchType;
   let timeframe = req.query.timeframe;
   let msg = "";
   let invalid = [];
-  if (!currency || !timeframe || !searchType) {
-    throw new CustomError(400, "failure", "Required query parameters: currency, timeframe, searchType");
+  if (!currency || !timeframe || !searchType || !limit) {
+    throw new CustomError(400, "failure", "Required query parameters: currency, timeframe, limit, searchType");
   }
   if (searchType !== "select" && searchType !== "search") {
     throw new CustomError(400, "failure", "Provided searchType can only be 'select' or 'search'");
