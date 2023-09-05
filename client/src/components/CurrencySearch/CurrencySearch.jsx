@@ -1,48 +1,72 @@
-import { Select, SelectItem, Search, Form } from "@carbon/react";
+import { Select, SelectItem, Search, Form, RadioButtonGroup, RadioButton, Loading, Button } from "@carbon/react";
 import { useContext, useEffect, useState } from "react";
 import { GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
+import { PriceDataCtx } from "../../context/PriceDataCtx";
 function CurrencySearch() {
+  const { cryptoCurrencies, timeframes } = useContext(GlobalCtx);
+
   const [searchValue, setSearchValue] = useState("");
+  const [searchErrorMsg, setSearchErrorMsg] = useState("");
+
   const [selectedValue, setSelectedValue] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-  const { cryptoCurrencies } = useContext(GlobalCtx);
-  const [loadingSelect, setLoadingSelect] = useState(true);
+  const [timeFramesValue, setTimeframesValue] = useState("");
+  const [searchType, setSearchType] = useState("");
+  const { defineReqParamsForPriceData } = useContext(PriceDataCtx);
+
   useEffect(() => {
-    if (cryptoCurrencies === null) {
+    if (timeframes === null) {
       return;
     }
-    setLoadingSelect(false);
-  }, [cryptoCurrencies]);
+    setTimeframesValue(timeframes[0].value);
+  }, [timeframes]);
 
   const handleSearchChange = (e) => {
-    //TODO validation, ?show drop down select ordered by matches
     let val = e.target.value;
     if (val.length > 30) {
-      setErrorMsg("Input restricted to max 30 characters");
+      setSearchErrorMsg("Input restricted to max 30 characters");
     } else {
-      setErrorMsg("");
-      setSearchValue(e.target.value);
+      setSearchErrorMsg("");
     }
+    setSearchValue(e.target.value);
+    setSearchType("search");
+    setSelectedValue("");
   };
   const handleSelectChange = (e) => {
     setSelectedValue(e.target.value);
+    setSearchType("select");
+    if (searchValue) {
+      setSearchValue("");
+      setSearchErrorMsg("");
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("selected currency", selectedValue);
-    console.log("searched currency", searchValue);
-    //TODO
+    if (searchErrorMsg || !timeFramesValue) {
+      return;
+    }
+    if (selectedValue || searchValue) {
+      let currency = selectedValue || searchValue;
+      defineReqParamsForPriceData(currency, timeFramesValue, searchType);
+    }
+  };
+  const handleRadioClick = (e) => {
+    setTimeframesValue(e.target.value);
   };
   return (
     <Form onSubmit={handleSubmit} action="#" className="currency-search">
-      <p className="error-msg">{errorMsg}</p>
+      <p className="error-msg">{searchErrorMsg}</p>
       <Search className="search" placeholder="Find cryptocurrency" value={searchValue} onChange={handleSearchChange} labelText="Cryptocurrencies" />
-      <Select id="select-1" warn={loadingSelect} warnText={"Loading..."} disabled={loadingSelect} onSelect={handleSelectChange} className="select" labelText="Select cryptocurrency" hideLabel={true}>
+      <Select id="select-1" warn={cryptoCurrencies === null ? true : false} warnText={"Loading..."} onChange={handleSelectChange} value={selectedValue} disabled={cryptoCurrencies === null ? true : false} className="select" labelText="Select cryptocurrency" hideLabel={true}>
         <SelectItem value="" text="" />
-        {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.id} text={curr.displayName} />)}
+        {/* {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.code} selected={curr.code === selectedValue ? true : false} text={curr.displayName} />)} */}
+        {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.code} text={curr.displayName} />)}
       </Select>
+      <RadioButtonGroup className="radio-group" legendText="Select time frame" disabled={timeframes === null ? true : false} valueSelected={timeFramesValue} name="timeframe">
+        {timeframes !== null ? timeframes.map((tf, i) => <RadioButton key={uuid()} labelText={tf.text} onClick={handleRadioClick} value={tf.value} id={`radio-${i + 1}`}></RadioButton>) : <Loading small={true} withOverlay={false} />}
+      </RadioButtonGroup>
+      <Button type="submit">Get price data</Button>
     </Form>
   );
 }
