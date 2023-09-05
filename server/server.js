@@ -10,6 +10,7 @@ import logUserActions from "./src/middlewares/logUserActions.js";
 import validatePriceDataQuery from "./src/middlewares/validatePriceDataQuery.js";
 import errorOnWrongEndPoint from "./src/middlewares/errorOnWrongEndPoint.js";
 import errorResponder from "./src/middlewares/errorResponder.js";
+import { database } from "./src/db.js";
 
 const app = express();
 
