@@ -1,0 +1,11 @@
+@use "../../sass/_vars.scss" as *;
+.app-footer {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  margin: auto;
+  color: $accent;
+  text-align: right;
+}

@@ -1,9 +1,6 @@
+@use "../../sass/vars.scss" as *;
 .info {
-  display: block;
-  color: #181818;
-  background-color: #ccaffc;
-  //   width: fit-content;
-  margin: auto;
+  color: $bg;
+  background-color: $accent;
   padding: 1em;
-  //   border-radius: 15px;
 }

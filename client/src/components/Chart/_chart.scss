@@ -1,5 +1,15 @@
 .chart {
   padding: 3rem 1rem;
   height: 500px;
+  min-height: 500px;
   margin: 2rem 0;
+  .error-msg {
+    background-color: white;
+    padding: 1rem;
+    width: fit-content;
+  }
+  &.empty {
+    background-color: black;
+    background-image: url("../img/subtle-grey.png");
+  }
 }

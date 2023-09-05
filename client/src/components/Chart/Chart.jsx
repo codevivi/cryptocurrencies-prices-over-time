@@ -9,10 +9,14 @@ const Chart = () => {
   const { priceData, loadingPriceData, getPriceDataErrorMsg } = useContext(PriceDataCtx);
 
   if (getPriceDataErrorMsg) {
-    return <p className="error-msg">{getPriceDataErrorMsg}</p>;
+    return (
+      <div className="chart empty">
+        <p className="error-msg">{getPriceDataErrorMsg}</p>
+      </div>
+    );
   }
   if (priceData === null) {
-    return null;
+    return <div className="chart empty"></div>;
   }
 
   return <div className="chart">{loadingPriceData ? <Loading withOverlay={false} /> : <LineChart data={priceData} options={getChartOptions(priceData)}></LineChart>}</div>;

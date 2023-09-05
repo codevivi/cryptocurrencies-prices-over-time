@@ -1,6 +1,5 @@
 @use "@carbon/react/scss/config" with (
-  $font-path: "@ibm/plex",
-  $use-flexbox-grid: "true"
+  $font-path: "@ibm/plex"
 );
 
 @use "@carbon/react";
@@ -8,24 +7,30 @@
 @use "../components/CurrencySearch/_currencySearch.scss";
 @use "../components/Chart/_chart.scss";
 @use "../components/Info/_info.scss";
+@use "../components/Footer/_footer.scss";
+@use "./vars.scss" as *;
 
 body {
-  background-color: #262626;
+  position: relative;
+  padding-bottom: 3rem;
+  background-color: $bg;
 }
 
 #root {
   width: 100%;
 }
+
 .page-main {
   display: block;
   width: 100%;
   min-width: 100%;
 }
+
 .error-msg {
   display: flex;
   align-items: flex-end;
   min-height: 3em;
-  color: red;
+  color: $danger;
   font-size: 0.9em;
   text-indent: 1em;
 }
