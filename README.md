@@ -10,6 +10,8 @@ Styled using Carbon Design React components and minimal custom SASS rules.
 
 _It was made following IBM internship task for applicants._
 
+![webpage screenshot](./screenshot.png)
+
 ## Functionality, features
 
 Front-End (**React**)
@@ -102,6 +104,4 @@ Returns response with http status code and json object:
 
 - **/api/price-data** Requires url query parameters: _currency, timeframe, limit and searchType_. searchType will be prefilled by react application depending if currency was selected or searched.
 
-<!-- ![home screen screenshot](./screenshots/home-screenshot.png)
-![login screen screenshot](./screenshots/login-screenshot.png)
-![accounts screen screenshot](./screenshots/accounts-screenshot.png) -->
+#### [🪲Link to issues ](https://github.com/codevivi/cryptocurrencies-prices-over-time/issues)
