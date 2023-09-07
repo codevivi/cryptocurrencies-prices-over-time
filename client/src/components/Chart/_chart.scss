@@ -1,17 +1,20 @@
 @use "@carbon/react/scss/theme";
-.chart {
-  padding: 3rem 1rem;
-  height: 500px;
-  min-height: 500px;
-  margin: 2rem 0;
-  .error-msg {
-    display: flex;
-    align-items: center;
-    padding-right: 1rem;
-    background-color: theme.$background-inverse;
-  }
-  &.empty {
-    background-color: black;
-    background-image: url("../img/subtle-grey.png");
+.chart-container {
+  padding-top: 3rem;
+  tabindex: -1;
+  .chart {
+    height: 400px;
+    min-height: 400px;
+    margin: 2rem 0;
+    .error-msg {
+      display: flex;
+      align-items: center;
+      padding-right: 1rem;
+      background-color: theme.$background-inverse;
+    }
+    &.empty {
+      background-color: black;
+      background-image: url("../img/subtle-grey.png");
+    }
   }
 }

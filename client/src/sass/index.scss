@@ -31,13 +31,13 @@
 }
 
 body {
+  position: relative;
   padding-bottom: 3rem;
   background-color: theme.$background;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #root {
-  position: relative;
   @include theme.theme();
 }
 
