@@ -2,13 +2,13 @@
 
 ## 📋 About
 
+⚡ Current branch - **aftersubmit** is my try to improve code and probably add functionality after **master** branch was submitted when applying for IBM internship.
+
 This is one page React application with functionality to search/select cryptocurrency and view it's prices over time.
 
 It has Node.js (Express.js) backend to log user actions (searched cryptocurrencies) and act as api middleware for CCXT library methods.
 
 Styled using Carbon Design React components and minimal custom SASS rules.
-
-_It was made following IBM internship task for applicants._
 
 ![webpage screenshot](./screenshot.png)
 
@@ -81,7 +81,7 @@ Back-End (**Node.js with Express.js + Mongo.db**)
    npm run build
    ```
 
-   - **TO START REACT BUILD PREVIEW** locally (will run on [http://localhost:4173/](http://localhost:4173/)) change CLIENT variable in server .env to have correct port, restart server and run below command:
+   - **TO START REACT BUILD PREVIEW** locally (will run on [http://localhost:4173/](http://localhost:4173/)) change CLIENT variable in server .env to have correct port for client, restart server and run below command in client directory:
 
    ```sh
    npm run preview
