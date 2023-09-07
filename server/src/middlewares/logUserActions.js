@@ -4,14 +4,14 @@ import { isDatabase } from "../db.js";
 import { NODE_ENV } from "../../config.js";
 
 const logUserActions = async (req, res, next) => {
-  if (req.query.currency && req.query.searchType) {
-    consoleLogUserActions(req.query.currency, req.query.searchType);
+  if (req.query.currency) {
+    consoleLogUserActions(req.query.currency);
     if (!isDatabase) {
       return next();
     }
     const dataToSave = new UserActionModel({
       currency: req.query.currency,
-      searchType: req.query.searchType,
+      searchType: "select",
     });
 
     try {

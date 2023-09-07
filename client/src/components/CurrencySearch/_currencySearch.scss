@@ -1,4 +1,5 @@
 @use "@carbon/react/scss/theme";
+@use "./selectInput/selectInput";
 .currency-search {
   display: flex;
   align-items: flex-start;
@@ -7,6 +8,7 @@
   gap: 2rem;
   width: 100%;
   max-width: 1200px;
+  margin-top: 2rem;
   input,
   option,
   label,
@@ -15,29 +17,12 @@
   p {
     font-size: 1rem;
   }
-  .flex-wrap {
-    display: inline-flex;
-    align-items: flex-end;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: stretch;
+  .search {
     width: 100%;
-    @media screen and (min-width: 900px) {
-      flex-direction: row;
-    }
-    .flex-item {
-      width: 100%;
-      position: relative;
-      @media screen and (min-width: 900px) {
-        width: auto;
-        flex: 1;
-      }
-      .cds--form-requirement {
-        position: absolute;
-        bottom: 0.7rem;
-        left: 1rem;
-      }
+    .scroll-container {
+      height: fit-content;
+      max-height: 400px;
+      overflow-y: auto;
     }
   }
   .cds--radio-button-group {

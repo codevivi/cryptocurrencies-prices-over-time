@@ -2,7 +2,7 @@
 
 ## 📋 About
 
-⚡ Current branch - **aftersubmit** is my try to improve code and probably add functionality after **master** branch was submitted when applying for IBM internship.
+⚡ Current branch - **aftersubmit** is my try to improve code and probably add/modify functionality after **master** branch was submitted when applying for IBM internship.
 
 This is one page React application with functionality to search/select cryptocurrency and view it's prices over time.
 
@@ -17,8 +17,7 @@ Styled using Carbon Design React components and minimal custom SASS rules.
 Front-End (**React**)
 
 - Responsive
-- Search. Able to find cryptocurrency by typing in name or code (only exact matches, case insensitive); Showing error message if exceeding 30 characters;
-- Able to select cryptocurrency from dropdown list;
+- Search. Start cryptocurrency Search by typing and select from dropdown matches.
 - Radio inputs for valid timeframes;
 - Slider input to set limit for returned results (time points in graph);
 - Renders line chart to visualize price changes over time;
@@ -102,6 +101,6 @@ Returns response with http status code and json object:
 
 - **/api/timeframes** Returns array of available timeframes for exchange. They will be used when getting data for charts. Every timeframe is an object with key and text;
 
-- **/api/price-data** Requires url query parameters: _currency, timeframe, limit and searchType_. searchType will be prefilled by react application depending if currency was selected or searched.
+- **/api/price-data** Requires url query parameters: currency, timeframe, limit;
 
 #### [🪲Link to issues ](https://github.com/codevivi/cryptocurrencies-prices-over-time/issues)

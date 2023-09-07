@@ -1,16 +1,14 @@
-import { Select, SelectItem, Search, Form, RadioButtonGroup, RadioButton, Loading, Button, Slider } from "@carbon/react";
-import { useContext, useEffect, useState } from "react";
+import { Form, RadioButtonGroup, RadioButton, Loading, Button, Slider } from "@carbon/react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import { PriceDataCtx } from "../../context/PriceDataCtx";
-function CurrencySearch() {
-  const { cryptoCurrencies, timeframes } = useContext(GlobalCtx);
+import ExpandableSearchInput from "./ExpandableSearchInput/ExpandableSearchInput";
 
-  const [searchValue, setSearchValue] = useState("");
-  const [searchErrorMsg, setSearchErrorMsg] = useState("");
+function CurrencySearch() {
+  const { timeframes } = useContext(GlobalCtx);
   const [selectedValue, setSelectedValue] = useState("");
   const [timeFramesValue, setTimeframesValue] = useState("");
-  const [searchType, setSearchType] = useState("");
   const [limit, setLimit] = useState(500);
   const [invalidLimit, setInvalidLimit] = useState(false);
   const { defineReqParamsForPriceData } = useContext(PriceDataCtx);
@@ -23,29 +21,9 @@ function CurrencySearch() {
     setTimeframesValue(timeframes[timeframes.length - 1].value);
   }, [timeframes]);
 
-  const handleSearchChange = (e) => {
-    let val = e.target.value;
-    if (val.length > 30) {
-      setSearchErrorMsg("Input restricted to max 30 characters");
-    } else {
-      setSearchErrorMsg("");
-    }
-    if (submitError) {
-      setSubmitError("");
-    }
-    setSearchValue(e.target.value);
-    setSearchType("search");
-    setSelectedValue("");
-  };
-  const handleSelectChange = (e) => {
-    setSelectedValue(e.target.value);
-    setSearchType("select");
-    setSearchValue("");
-    setSearchErrorMsg("");
-    if (submitError) {
-      setSubmitError("");
-    }
-  };
+  const setSelectedValueCallback = useCallback((code) => {
+    setSelectedValue(code);
+  }, []);
 
   const handleSliderChange = (val) => {
     let value = Number(val.value);
@@ -62,36 +40,24 @@ function CurrencySearch() {
     if (invalidLimit) {
       return;
     }
-    if (searchErrorMsg || !timeFramesValue) {
+    if (!timeFramesValue) {
       return;
     }
-    if (selectedValue || searchValue) {
-      let currency = selectedValue || searchValue;
-      defineReqParamsForPriceData(currency, timeFramesValue, limit, searchType);
+    if (selectedValue) {
+      let currency = selectedValue;
+      defineReqParamsForPriceData(currency, timeFramesValue, limit);
       return;
     }
     setSubmitError("Please select cryptocurrency or fill in search field");
   };
+
   const handleRadioClick = (e) => {
     setTimeframesValue(e.target.value);
   };
+
   return (
     <Form onSubmit={handleSubmit} action="#" className="currency-search">
-      <div className="flex-wrap">
-        <div className="flex-item">
-          <p className="error-msg">{searchErrorMsg}</p>
-          <p className="cds--label" aria-hidden={true}>
-            Search
-          </p>
-          <Search className="search" placeholder="Cryptocurrency by name or code" value={searchValue} onChange={handleSearchChange} labelText="Search" />
-        </div>
-        <div className="flex-item">
-          <Select className="select" id="select-1" warn={cryptoCurrencies === null ? true : false} warnText={"Loading..."} onChange={handleSelectChange} value={selectedValue} disabled={cryptoCurrencies === null ? true : false} labelText="Or Select cryptocurrency" hideLabel={false}>
-            <SelectItem value="" text="" />
-            {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.code} text={curr.displayName} />)}
-          </Select>
-        </div>
-      </div>
+      <ExpandableSearchInput setSelectedValueCallback={setSelectedValueCallback} />
       <RadioButtonGroup className="radio-group" legendText="Select time frame" disabled={timeframes === null ? true : false} valueSelected={timeFramesValue} name="timeframe">
         {timeframes !== null ? timeframes.map((tf, i) => <RadioButton key={uuid()} labelText={tf.text} onClick={handleRadioClick} value={tf.value} id={`radio-${i + 1}`}></RadioButton>) : <Loading small={true} withOverlay={false} />}
       </RadioButtonGroup>
