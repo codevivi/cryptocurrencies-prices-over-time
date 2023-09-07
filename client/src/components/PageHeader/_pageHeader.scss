@@ -1,19 +1,19 @@
+@use "@carbon/react/scss/theme";
+
 .page-header {
-  padding-left: 1rem;
-  padding-right: 1rem;
   .error-msg {
     position: absolute;
-    bottom: -3rem;
+    bottom: -4rem;
     display: block;
     width: 100%;
     text-align: center;
   }
-  h1 {
+  .page-heading {
     position: static;
+    padding: 0 2.5rem;
+    color: theme.get("accent");
     text-align: center;
     text-transform: uppercase;
-    font-size: 1.2rem;
-    color: #ccaffc;
-    font-weight: 500;
+    font-size: 1.1rem;
   }
 }

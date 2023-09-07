@@ -1,11 +1,15 @@
-@use "../../sass/_vars.scss" as *;
+@use "@carbon/react/scss/theme";
 .app-footer {
   position: absolute;
   bottom: 0;
   display: block;
   width: 100%;
-  padding: 0.5rem 1rem;
   margin: auto;
-  color: $accent;
-  text-align: right;
+  padding: 0.3rem 1rem;
+  color: theme.$text-secondary;
+  font-size: 0.8rem;
+  text-align: center;
+  p {
+    margin: 0;
+  }
 }

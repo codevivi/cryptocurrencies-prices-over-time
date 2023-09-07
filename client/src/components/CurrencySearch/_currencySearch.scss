@@ -1,4 +1,4 @@
-@use "@carbon/colors" as cc;
+@use "@carbon/react/scss/theme";
 .currency-search {
   display: flex;
   align-items: flex-start;
@@ -18,18 +18,33 @@
   .flex-wrap {
     display: inline-flex;
     align-items: flex-end;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 2rem;
     justify-content: stretch;
     width: 100%;
+    @media screen and (min-width: 900px) {
+      flex-direction: row;
+    }
     .flex-item {
-      min-width: 500px;
-      flex: 1;
+      width: 100%;
+      position: relative;
+      @media screen and (min-width: 900px) {
+        width: auto;
+        flex: 1;
+      }
+      .cds--form-requirement {
+        position: absolute;
+        bottom: 0.7rem;
+        left: 1rem;
+      }
     }
   }
   .cds--radio-button-group {
     flex-wrap: wrap;
     gap: 0.5rem;
+    width: 100%;
+    max-width: 100%;
     .cds--radio-button-wrapper {
       display: flex;
       align-items: center;
@@ -37,18 +52,20 @@
       min-width: 5rem;
       .cds--radio-button:checked + label {
         .cds--radio-button__appearance {
-          background-color: cc.$blue-50;
+          background-color: theme.$border-interactive;
         }
       }
     }
   }
   .slider {
-    width: 100%;
-    min-width: 100%;
+    width: 80%;
+    max-width: 80%;
     .cds--slider-container {
       width: 100%;
       .cds--slider {
         width: 100%;
+        min-width: 6em;
+        max-width: none;
       }
       .cds--text-input {
         min-width: 4.5em;

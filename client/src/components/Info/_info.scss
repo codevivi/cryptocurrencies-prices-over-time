@@ -1,6 +1,6 @@
-@use "../../sass/vars.scss" as *;
+@use "@carbon/react/scss/theme";
 .info {
-  color: $bg;
-  background-color: $accent;
   padding: 1em;
+  color: theme.$text-inverse;
+  background-color: theme.get("accent");
 }

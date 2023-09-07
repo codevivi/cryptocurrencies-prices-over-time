@@ -83,12 +83,14 @@ function CurrencySearch() {
           <p className="cds--label" aria-hidden={true}>
             Search
           </p>
-          <Search className="search" placeholder="For cryptocurrency by name or code" value={searchValue} onChange={handleSearchChange} labelText="Search" />
+          <Search className="search" placeholder="Cryptocurrency by name or code" value={searchValue} onChange={handleSearchChange} labelText="Search" />
         </div>
-        <Select className="flex-item select" id="select-1" warn={cryptoCurrencies === null ? true : false} warnText={"Loading..."} onChange={handleSelectChange} value={selectedValue} disabled={cryptoCurrencies === null ? true : false} labelText="Or Select cryptocurrency" hideLabel={false}>
-          <SelectItem value="" text="" />
-          {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.code} text={curr.displayName} />)}
-        </Select>
+        <div className="flex-item">
+          <Select className="select" id="select-1" warn={cryptoCurrencies === null ? true : false} warnText={"Loading..."} onChange={handleSelectChange} value={selectedValue} disabled={cryptoCurrencies === null ? true : false} labelText="Or Select cryptocurrency" hideLabel={false}>
+            <SelectItem value="" text="" />
+            {cryptoCurrencies && cryptoCurrencies.map((curr) => <SelectItem key={uuid()} value={curr.code} text={curr.displayName} />)}
+          </Select>
+        </div>
       </div>
       <RadioButtonGroup className="radio-group" legendText="Select time frame" disabled={timeframes === null ? true : false} valueSelected={timeFramesValue} name="timeframe">
         {timeframes !== null ? timeframes.map((tf, i) => <RadioButton key={uuid()} labelText={tf.text} onClick={handleRadioClick} value={tf.value} id={`radio-${i + 1}`}></RadioButton>) : <Loading small={true} withOverlay={false} />}

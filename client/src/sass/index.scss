@@ -1,35 +1,55 @@
-@use "@carbon/react" with (
-  $font-path: "@ibm/plex"
+@use "@carbon/react/scss/themes";
+@use "@carbon/react/scss/theme" with (
+  $fallback: themes.$g90,
+  $theme: (
+    accent: #ccaffc,
+  )
 );
+
+//used components
+@use "@carbon/react/scss/components/ui-shell";
+@use "@carbon/react/scss/components/link";
+@use "@carbon/react/scss/components/select";
+@use "@carbon/react/scss/components/search";
+@use "@carbon/react/scss/components/form";
+@use "@carbon/react/scss/components/radio-button";
+@use "@carbon/react/scss/components/loading";
+@use "@carbon/react/scss/components/button";
+@use "@carbon/react/scss/components/slider";
+// @use "@carbon/react/scss/layout";
+
+// custom scss
 @use "../components/PageHeader/_pageHeader.scss";
 @use "../components/CurrencySearch/_currencySearch.scss";
 @use "../components/Chart/_chart.scss";
 @use "../components/Info/_info.scss";
 @use "../components/Footer/_footer.scss";
-@use "./_vars.scss" as *;
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
 
 body {
-  position: relative;
   padding-bottom: 3rem;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: $bg;
+  background-color: theme.$background;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #root {
-  width: 100%;
+  position: relative;
+  @include theme.theme();
 }
 
 .page-main {
   display: block;
-  width: 100%;
-  min-width: 100%;
 }
 
 .error-msg {
   display: flex;
   align-items: flex-end;
   min-height: 3em;
-  color: $danger;
+  color: theme.$support-error-inverse;
   font-size: 0.9em;
   text-indent: 1em;
 }

@@ -1,12 +1,14 @@
+@use "@carbon/react/scss/theme";
 .chart {
   padding: 3rem 1rem;
   height: 500px;
   min-height: 500px;
   margin: 2rem 0;
   .error-msg {
-    background-color: white;
-    padding: 1rem;
-    width: fit-content;
+    display: flex;
+    align-items: center;
+    padding-right: 1rem;
+    background-color: theme.$background-inverse;
   }
   &.empty {
     background-color: black;

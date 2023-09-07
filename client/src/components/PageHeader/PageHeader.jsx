@@ -6,7 +6,7 @@ function PageHeader() {
   return (
     <Header className="page-header" aria-label="Page header">
       {errorMsg && <p className="error-msg">{errorMsg}</p>}
-      <HeaderName as="h1" prefix="">
+      <HeaderName className="page-heading" as="h1" prefix="">
         Cryptocurrencies prices over time
       </HeaderName>
     </Header>
