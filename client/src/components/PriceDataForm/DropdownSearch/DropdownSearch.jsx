@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { ContainedList, ContainedListItem, ExpandableSearch } from "@carbon/react";
+import { ContainedList, ContainedListItem, Search } from "@carbon/react";
 import { GlobalCtx } from "../../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types";
@@ -13,7 +13,7 @@ const filterCryptoCurrencies = (searchTerm, currencies) => {
   return currencies.filter((listItem) => listItem.displayName.toLowerCase().includes(searchTerm));
 };
 
-function ExpandableSearchInput({ setSelectedValueCallback, clearSubmitError, selectedValue }) {
+function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedValue }) {
   const { cryptoCurrencies } = useContext(GlobalCtx);
   const { clearGetPricesErrorMsg } = useContext(PriceDataCtx);
   const [selectCryptoCurrencies, setSelectCryptoCurrencies] = useState([]);
@@ -70,7 +70,7 @@ function ExpandableSearchInput({ setSelectedValueCallback, clearSubmitError, sel
         className="search"
         label="Cryptocurrency search"
         kind="on-page"
-        action={<ExpandableSearch placeholder="Type and select" isExpanded={true} disabled={cryptoCurrencies !== null ? false : true} value={searchTerm} onChange={handleChange} closeButtonLabelText="Clear search input" size="lg" labelText="Select from search matches" />}>
+        action={<Search placeholder="Type and select" isExpanded={true} disabled={cryptoCurrencies !== null ? false : true} value={searchTerm} onChange={handleChange} closeButtonLabelText="Clear search input" size="lg" labelText="Select from search matches" />}>
         <div className="scroll-container">
           {selectCryptoCurrencies &&
             selectCryptoCurrencies.map((listItem) => (
@@ -83,8 +83,8 @@ function ExpandableSearchInput({ setSelectedValueCallback, clearSubmitError, sel
     </>
   );
 }
-export default ExpandableSearchInput;
-ExpandableSearchInput.propTypes = {
+export default DropdownSearch;
+DropdownSearch.propTypes = {
   setSelectedValueCallback: PropTypes.func,
   selectedValue: PropTypes.string,
   clearSubmitError: PropTypes.func,

@@ -3,9 +3,9 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import { PriceDataCtx } from "../../context/PriceDataCtx";
-import ExpandableSearchInput from "./ExpandableSearchInput/ExpandableSearchInput";
+import DropdownSearch from "./DropdownSearch/DropdownSearch";
 
-function CurrencySearch() {
+function PriceDataForm() {
   const { timeframes, cryptoCurrencies } = useContext(GlobalCtx);
   const [selectedValue, setSelectedValue] = useState("");
   const [timeFramesValue, setTimeframesValue] = useState("");
@@ -60,8 +60,8 @@ function CurrencySearch() {
   };
 
   return (
-    <Form onSubmit={handleSubmit} action="#" className="currency-search">
-      <ExpandableSearchInput setSelectedValueCallback={setSelectedValueCallback} clearSubmitError={clearSubmitError} selectedValue={selectedValue} />
+    <Form onSubmit={handleSubmit} action="#" className="price-data-form">
+      <DropdownSearch setSelectedValueCallback={setSelectedValueCallback} clearSubmitError={clearSubmitError} selectedValue={selectedValue} />
       <RadioButtonGroup className="radio-group" legendText="Select time frame" disabled={timeframes === null ? true : false} valueSelected={timeFramesValue} name="timeframe">
         {timeframes !== null ? timeframes.map((tf, i) => <RadioButton key={uuid()} labelText={tf.text} onClick={handleRadioClick} value={tf.value} id={`radio-${i + 1}`}></RadioButton>) : <Loading small={true} withOverlay={false} />}
       </RadioButtonGroup>
@@ -75,4 +75,4 @@ function CurrencySearch() {
     </Form>
   );
 }
-export default CurrencySearch;
+export default PriceDataForm;
