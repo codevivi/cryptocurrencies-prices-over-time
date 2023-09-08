@@ -1,7 +1,6 @@
 @use "@carbon/react/scss/theme";
 .chart-container {
   padding-top: 3rem;
-  tabindex: -1;
   .chart {
     height: 400px;
     min-height: 400px;
@@ -11,10 +10,6 @@
       align-items: center;
       padding-right: 1rem;
       background-color: theme.$background-inverse;
-    }
-    &.empty {
-      background-color: black;
-      background-image: url("../img/subtle-grey.png");
     }
   }
 }

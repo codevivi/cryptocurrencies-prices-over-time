@@ -51,6 +51,7 @@ function useGetPricesOverTime() {
       })
       .catch((e) => {
         setGetPricesErrorMsg(e.response?.data.message || "Sorry, problems communicating with server");
+        setPriceData(null);
       })
       .finally(() => {
         setLoading(false);

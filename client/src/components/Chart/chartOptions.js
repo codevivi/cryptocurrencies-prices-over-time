@@ -26,6 +26,10 @@ const chartOptions = {
 };
 
 function getChartOptions(priceData) {
+  if (priceData === null || priceData.length === 0) {
+    return chartOptions;
+  }
+
   const customOptions = { ...chartOptions };
   if (priceData[0].price < 1) {
     customOptions.axes.left.scaleType = "linear";
