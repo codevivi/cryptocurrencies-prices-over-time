@@ -32,7 +32,7 @@ Back-End (**Node.js with Express.js + Mongo.db**)
 
 **Must have [Node.js](https://nodejs.org), npm** installed
 
-**If want to use [Mongo db](https://account.mongodb.com/account/login)** , make sure to have cluster created with database named 'crypto', and copy cluster connection string to .env file (step 2).
+**If want to use [Mongo db](https://account.mongodb.com/account/login)** , make sure to have cluster created with database named 'crypto',add server ip address to allowed networks in Atlas. Copy cluster connection string to .env file (step 2).
 
 1. Clone the repo
 
