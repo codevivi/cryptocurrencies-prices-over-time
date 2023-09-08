@@ -5,6 +5,7 @@ import { PriceDataCtx } from "../../context/PriceDataCtx";
 const Chart = () => {
   const { loadingPriceData } = useContext(PriceDataCtx);
   const chartRef = useRef();
+
   useEffect(() => {
     if (loadingPriceData) {
       return;
@@ -13,6 +14,7 @@ const Chart = () => {
       chartRef.current.scrollIntoView();
     }
   }, [loadingPriceData]);
+
   return (
     <div className="chart-container" ref={chartRef}>
       <ChartContent />

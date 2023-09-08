@@ -4,9 +4,9 @@ import useGetPricesOverTime from "../hooks/useGetPricesOverTime";
 export const PriceDataCtx = createContext();
 
 export const PriceDataProvider = ({ children }) => {
-  const [priceData, loadingPriceData, getPriceDataErrorMsg, defineReqParamsForPriceData] = useGetPricesOverTime();
+  const [priceData, loadingPriceData, getPricesErrorMsg, clearGetPricesErrorMsg, setReqQueryCallback] = useGetPricesOverTime();
 
-  return <PriceDataCtx.Provider value={{ priceData: priceData, loadingPriceData: loadingPriceData, getPriceDataErrorMsg: getPriceDataErrorMsg, defineReqParamsForPriceData: defineReqParamsForPriceData }}>{children}</PriceDataCtx.Provider>;
+  return <PriceDataCtx.Provider value={{ priceData: priceData, loadingPriceData: loadingPriceData, getPricesErrorMsg: getPricesErrorMsg, clearGetPricesErrorMsg: clearGetPricesErrorMsg, setReqQueryCallback: setReqQueryCallback }}>{children}</PriceDataCtx.Provider>;
 };
 
 PriceDataProvider.propTypes = {

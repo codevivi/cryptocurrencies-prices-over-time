@@ -13,43 +13,50 @@ const customizeData = (data, symbol) => {
 };
 
 function useGetPricesOverTime() {
-  const [reqParams, setReqParams] = useState(null);
+  const [reqQuery, setReqQuery] = useState(null);
   const [priceData, setPriceData] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [getPricesErrorMsg, setGetPricesErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const defineReqParamsForPriceData = useCallback((currency, timeframe, limit) => {
-    setReqParams({ currency: currency, timeframe: timeframe, limit: limit });
+
+  const setReqQueryCallback = useCallback((currency, timeframe, limit) => {
+    setReqQuery(`?currency=${currency}&timeframe=${timeframe}&limit=${limit}`);
+  }, []);
+
+  const clearGetPricesErrorMsg = useCallback(() => {
+    setGetPricesErrorMsg("");
   }, []);
 
   useEffect(() => {
-    if (reqParams === null) {
+    if (reqQuery === null) {
       return;
     }
-    setErrorMsg("");
+    setGetPricesErrorMsg("");
     setLoading(true);
-  }, [reqParams]);
+  }, [reqQuery]);
 
   useEffect(() => {
-    if (reqParams === null) {
+    if (reqQuery === null) {
       return;
     }
     axios
-      .get(url + `?currency=${reqParams.currency}&timeframe=${reqParams.timeframe}&limit=${reqParams.limit}`)
+      .get(`${url}${reqQuery}`)
       .then((res) => {
         if (res.status === 200) {
           let customizedData = customizeData(res.data.data.chartData, res.data.data.symbol);
           if (customizedData.length === 0) {
-            setErrorMsg("No data for your selection");
+            setGetPricesErrorMsg("No data for your selection");
           }
           setPriceData(customizedData);
-          setLoading(false);
         }
       })
       .catch((e) => {
-        setErrorMsg(e.response?.data.message || "Sorry, problems communicating with server");
+        setGetPricesErrorMsg(e.response?.data.message || "Sorry, problems communicating with server");
+      })
+      .finally(() => {
+        setLoading(false);
       });
-  }, [reqParams]);
+  }, [reqQuery]);
 
-  return [priceData, loading, errorMsg, defineReqParamsForPriceData];
+  return [priceData, loading, getPricesErrorMsg, clearGetPricesErrorMsg, setReqQueryCallback];
 }
 export default useGetPricesOverTime;
