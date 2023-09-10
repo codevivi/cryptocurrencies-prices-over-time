@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 const userActionSchema = new mongoose.Schema({
-  searchType: {
+  description: {
     required: true,
     type: String,
   },
-  currency: {
-    required: true,
+  value: {
+    required: false,
     type: String,
   },
 });
-export default mongoose.model("UserAction", userActionSchema);
+export default mongoose.model("user-actions", userActionSchema);

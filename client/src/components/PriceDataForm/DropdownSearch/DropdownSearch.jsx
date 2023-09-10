@@ -13,7 +13,7 @@ const filterCryptoCurrencies = (searchTerm, currencies) => {
   return currencies.filter((listItem) => listItem.displayName.toLowerCase().includes(searchTerm));
 };
 
-function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedValue }) {
+function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedValue, setSearchToLogOnSubmitCallback, dispatchActionToLog }) {
   const { cryptoCurrencies } = useContext(GlobalCtx);
   const { clearGetPricesErrorMsg } = useContext(PriceDataCtx);
   const [selectCryptoCurrencies, setSelectCryptoCurrencies] = useState([]);
@@ -27,11 +27,13 @@ function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedVa
       }
       clearSubmitError();
       setSelectedValueCallback(code);
+      dispatchActionToLog({ value: searchTerm, description: "searched cryptocurrency" });
       setSearchTerm(displayName);
       setSelectCryptoCurrencies([]);
     };
   };
 
+  //to change select list
   useEffect(() => {
     if (selectedValue) {
       return;
@@ -45,15 +47,16 @@ function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedVa
       setSelectedValueCallback(null);
       return;
     }
-
+    setSearchToLogOnSubmitCallback(searchTerm);
     const timeoutId = setTimeout(() => setSelectCryptoCurrencies(filterCryptoCurrencies(searchTerm, cryptoCurrencies)), 1000);
     return () => clearTimeout(timeoutId);
-  }, [selectedValue, searchTerm, cryptoCurrencies, setSelectedValueCallback]);
+  }, [selectedValue, searchTerm, cryptoCurrencies, setSelectedValueCallback, setSearchToLogOnSubmitCallback]);
 
   const handleChange = (event) => {
     clearSubmitError();
     clearGetPricesErrorMsg();
-    setSelectedValueCallback(null);
+    setSelectedValueCallback("");
+    setSearchToLogOnSubmitCallback("");
     setSearchTerm(event.target.value);
 
     if (event.target.value.length > 30) {
@@ -88,4 +91,6 @@ DropdownSearch.propTypes = {
   setSelectedValueCallback: PropTypes.func,
   selectedValue: PropTypes.string,
   clearSubmitError: PropTypes.func,
+  setSearchToLogOnSubmitCallback: PropTypes.func,
+  dispatchActionToLog: PropTypes.func,
 };

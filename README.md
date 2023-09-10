@@ -92,15 +92,17 @@ Returns response with http status code and json object:
 
 - **type**: 'success', 'failure' (for client errors) or 'error' (for server errors)
 - **message**: error message or returned object description;
-- **data**: requested or endpoint data;
+- **data**: requested or endpoint data (optional);
 
 **GET** Endpoints:
 
-- **/** Return links to github repository (documentation) and github issues;
-- **/api/currencies** Returns sorted array of available currencies in exchange. Single currency is an object with id, code, name, displayName;
+`/` - Return links to github repository (documentation) and github issues;
 
-- **/api/timeframes** Returns array of available timeframes for exchange. They will be used when getting data for charts. Every timeframe is an object with key and text;
+`/save-user-action` - Saves user action (description and value(optional)) to Mongo db and/or logs to console;
 
-- **/api/price-data** Requires url query parameters: currency, timeframe, limit;
+`/api/currencies` - Returns sorted array of available currencies in exchange. Single currency is an object with id, code, name, displayName;
+
+`/api/timeframes` - Returns array of available timeframes for exchange. They will be used when getting data for charts. Every timeframe is an object with key and text;
+`/api/price-data` - Requires url query parameters: currency, timeframe, limit;
 
 #### [🪲Link to issues ](https://github.com/codevivi/cryptocurrencies-prices-over-time/issues)

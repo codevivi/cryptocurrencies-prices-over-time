@@ -8,7 +8,7 @@ function useGetTimeframes() {
   const [errorMsg, setErrorMsg] = useState(null);
   useEffect(() => {
     axios
-      .get(url, { headers: { "content-Type": "application/json", Accept: "application/json" } })
+      .get(url)
       .then((res) => {
         if (res.status === 200) {
           setTimeframes(res.data.data);

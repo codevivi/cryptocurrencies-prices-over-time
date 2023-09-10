@@ -4,15 +4,18 @@ import { GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import { PriceDataCtx } from "../../context/PriceDataCtx";
 import DropdownSearch from "./DropdownSearch/DropdownSearch";
+import useLogUserAction from "../../hooks/useLogUserAction";
 
 function PriceDataForm() {
   const { timeframes, cryptoCurrencies } = useContext(GlobalCtx);
+  const { setReqQueryCallback, loadingPriceData } = useContext(PriceDataCtx);
   const [selectedValue, setSelectedValue] = useState("");
   const [timeFramesValue, setTimeframesValue] = useState("");
   const [limit, setLimit] = useState(500);
   const [invalidLimit, setInvalidLimit] = useState(false);
-  const { setReqQueryCallback, loadingPriceData } = useContext(PriceDataCtx);
+  const [searchToLogOnSubmit, setSearchToLogOnSubmit] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [dispatchActionToLog] = useLogUserAction();
 
   useEffect(() => {
     if (timeframes === null) {
@@ -20,6 +23,10 @@ function PriceDataForm() {
     }
     setTimeframesValue(timeframes[timeframes.length - 1].value);
   }, [timeframes]);
+
+  const setSearchToLogOnSubmitCallback = useCallback((str) => {
+    setSearchToLogOnSubmit(str);
+  }, []);
 
   const setSelectedValueCallback = useCallback((code) => {
     setSelectedValue(code || "");
@@ -44,15 +51,22 @@ function PriceDataForm() {
     if (invalidLimit) {
       return;
     }
+
     if (!timeFramesValue) {
       return;
     }
+
     if (selectedValue) {
       let currency = selectedValue;
+      dispatchActionToLog({ value: currency, description: "selected cryptocurrency" });
       setReqQueryCallback(currency, timeFramesValue, limit);
       return;
     }
-    setSubmitError("Please select cryptocurrency from search matches dropdown");
+
+    if (searchToLogOnSubmit) {
+      dispatchActionToLog({ value: searchToLogOnSubmit, description: "searched cryptocurrency" });
+    }
+    setSubmitError("Select currency from dropdown search matches");
   };
 
   const handleRadioClick = (e) => {
@@ -61,7 +75,7 @@ function PriceDataForm() {
 
   return (
     <Form onSubmit={handleSubmit} action="#" className="price-data-form">
-      <DropdownSearch setSelectedValueCallback={setSelectedValueCallback} clearSubmitError={clearSubmitError} selectedValue={selectedValue} />
+      <DropdownSearch setSelectedValueCallback={setSelectedValueCallback} clearSubmitError={clearSubmitError} selectedValue={selectedValue} setSearchToLogOnSubmitCallback={setSearchToLogOnSubmitCallback} dispatchActionToLog={dispatchActionToLog} />
       <RadioButtonGroup className="radio-group" legendText="Select time frame" disabled={timeframes === null ? true : false} valueSelected={timeFramesValue} name="timeframe">
         {timeframes !== null ? timeframes.map((tf, i) => <RadioButton key={uuid()} labelText={tf.text} onClick={handleRadioClick} value={tf.value} id={`radio-${i + 1}`}></RadioButton>) : <Loading small={true} withOverlay={false} />}
       </RadioButtonGroup>
