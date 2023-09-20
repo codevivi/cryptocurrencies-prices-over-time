@@ -2,17 +2,28 @@ import { useReducer, useEffect } from "react";
 import { SERVER_BASE_URL } from "../config";
 import axios from "axios";
 const url = SERVER_BASE_URL + "save-user-action";
-const actionsToLog = ["selected cryptocurrency", "searched cryptocurrency"];
 
-function actionToLogReducer(state, action) {
+export enum ActionToLogDescription {
+  SELECTED_CRYPTOCURRENCY = "selected cryptocurrency",
+  SEARCHED_CRYPTOCURRENCY = "searched cryptocurrency",
+}
+
+export type ActionToLogAction = {
+  description: ActionToLogDescription;
+  value?: string;
+};
+
+type ActionToLogState = {
+  description: ActionToLogDescription | "";
+  value: string;
+} | null;
+
+function actionToLogReducer(state: ActionToLogState, action: ActionToLogAction): ActionToLogState {
   if (state === null) {
     state = { description: "", value: "" };
   }
   if (state.description === action.description && state.value === action.value) {
     return state;
-  }
-  if (!actionsToLog.includes(action.description)) {
-    throw new Error(`Invalid description, please provide one of: ${actionsToLog.join(", ")}`);
   }
   return {
     description: action.description,
@@ -20,7 +31,8 @@ function actionToLogReducer(state, action) {
   };
 }
 
-function useLogUserAction() {
+export const useLogUserAction = () => {
+  //using useReducer to make sure state not updated if identical object passed
   const [actionToLog, dispatchActionToLog] = useReducer(actionToLogReducer, null);
 
   useEffect(() => {
@@ -41,5 +53,5 @@ function useLogUserAction() {
   }, [actionToLog]);
 
   return [dispatchActionToLog];
-}
+};
 export default useLogUserAction;

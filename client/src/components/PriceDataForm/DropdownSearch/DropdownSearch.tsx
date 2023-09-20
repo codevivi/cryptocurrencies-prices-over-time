@@ -1,11 +1,27 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FunctionComponent } from "react";
 import { ContainedList, ContainedListItem, Search } from "@carbon/react";
 import { type GlobalContextValue, GlobalCtx } from "../../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
-import PropTypes from "prop-types";
-import { PriceDataCtx } from "../../../context/PriceDataCtx";
+import { ChangeEvent, Dispatch } from "react";
+import { type PriceDataContextValue, PriceDataCtx } from "../../../context/PriceDataCtx";
+import { type CryptoCurrencies } from "../../../hooks/useGetCryptoCurrencies";
+import { type SetSelectedValueCallback, type ClearSubmitError, type SelectedValue, type SetSearchToLogOnSubmitCallback } from "../PriceDataForm";
+import { ActionToLogDescription, type ActionToLogAction } from "../../../hooks/useLogUserAction";
 
-const filterCryptoCurrencies = (searchTerm, currencies) => {
+type FilterCryptoCurrencies = (searchTerm: string, currencies: CryptoCurrencies) => CryptoCurrencies;
+
+type DropdownSearchProps = {
+  setSelectedValueCallback: SetSelectedValueCallback;
+  clearSubmitError: ClearSubmitError;
+  selectedValue: SelectedValue;
+  setSearchToLogOnSubmitCallback: SetSearchToLogOnSubmitCallback;
+  dispatchActionToLog: Dispatch<ActionToLogAction>;
+};
+
+const filterCryptoCurrencies: FilterCryptoCurrencies = (searchTerm, currencies) => {
+  if (currencies === null) {
+    return [];
+  }
   searchTerm = searchTerm.trim().toLowerCase();
   if (searchTerm.length === 1) {
     return currencies.filter((listItem) => listItem.displayName.toLowerCase().startsWith(searchTerm) || listItem.code.toLowerCase().startsWith(searchTerm));
@@ -13,21 +29,21 @@ const filterCryptoCurrencies = (searchTerm, currencies) => {
   return currencies.filter((listItem) => listItem.displayName.toLowerCase().includes(searchTerm));
 };
 
-function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedValue, setSearchToLogOnSubmitCallback, dispatchActionToLog }) {
+const DropdownSearch: FunctionComponent<DropdownSearchProps> = ({ setSelectedValueCallback, clearSubmitError, selectedValue, setSearchToLogOnSubmitCallback, dispatchActionToLog }) => {
   const { cryptoCurrencies } = useContext(GlobalCtx) as GlobalContextValue;
-  const { clearGetPricesErrorMsg } = useContext(PriceDataCtx);
-  const [selectCryptoCurrencies, setSelectCryptoCurrencies] = useState([]);
+  const { clearGetPricesErrorMsg } = useContext(PriceDataCtx) as PriceDataContextValue;
+  const [selectCryptoCurrencies, setSelectCryptoCurrencies] = useState<CryptoCurrencies>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleItemClick = (code, displayName) => {
+  const handleItemClick = (code: string, displayName: string) => {
     return () => {
       if (errorMsg) {
         return;
       }
       clearSubmitError();
       setSelectedValueCallback(code);
-      dispatchActionToLog({ value: searchTerm, description: "searched cryptocurrency" });
+      dispatchActionToLog({ value: searchTerm, description: ActionToLogDescription.SEARCHED_CRYPTOCURRENCY });
       setSearchTerm(displayName);
       setSelectCryptoCurrencies([]);
     };
@@ -52,7 +68,7 @@ function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedVa
     return () => clearTimeout(timeoutId);
   }, [selectedValue, searchTerm, cryptoCurrencies, setSelectedValueCallback, setSearchToLogOnSubmitCallback]);
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     clearSubmitError();
     clearGetPricesErrorMsg();
     setSelectedValueCallback("");
@@ -85,12 +101,5 @@ function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedVa
       </ContainedList>
     </>
   );
-}
-export default DropdownSearch;
-DropdownSearch.propTypes = {
-  setSelectedValueCallback: PropTypes.func,
-  selectedValue: PropTypes.string,
-  clearSubmitError: PropTypes.func,
-  setSearchToLogOnSubmitCallback: PropTypes.func,
-  dispatchActionToLog: PropTypes.func,
 };
+export default DropdownSearch;

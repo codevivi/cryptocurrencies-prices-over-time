@@ -3,7 +3,27 @@ import { SERVER_BASE_URL } from "../config";
 import axios from "axios";
 const url = SERVER_BASE_URL + "api/price-data";
 
-const customizeData = (data, symbol) => {
+type ChartData = [number, number, number, number, number, number][] | [];
+
+type PairSymbol = string;
+
+export type CustomizedPriceData =
+  | {
+      date: Date;
+      dateString: string;
+      price: number;
+      group: PairSymbol;
+    }[]
+  | null;
+
+export type IsLoading = boolean;
+export type GetPricesErrorMsg = string;
+export type SetReqQuery = (currency: string, timeframe: string, limit: number) => void;
+export type ClearGetPricesErrorMsg = () => void;
+
+type UseGetPricesOverTime = () => [CustomizedPriceData | null, IsLoading, GetPricesErrorMsg, ClearGetPricesErrorMsg, SetReqQuery];
+
+const customizeData = (data: ChartData, symbol: PairSymbol): CustomizedPriceData => {
   let customData = data.map((item) => {
     let date = new Date(item[0]);
     let dateString = date.toLocaleString();
@@ -12,17 +32,17 @@ const customizeData = (data, symbol) => {
   return customData;
 };
 
-function useGetPricesOverTime() {
-  const [reqQuery, setReqQuery] = useState(null);
-  const [priceData, setPriceData] = useState(null);
-  const [getPricesErrorMsg, setGetPricesErrorMsg] = useState("");
-  const [loading, setLoading] = useState(false);
+export const useGetPricesOverTime: UseGetPricesOverTime = () => {
+  const [reqQuery, setReqQuery] = useState<string | null>(null);
+  const [priceData, setPriceData] = useState<CustomizedPriceData>(null);
+  const [getPricesErrorMsg, setGetPricesErrorMsg] = useState<GetPricesErrorMsg>("");
+  const [loading, setLoading] = useState<IsLoading>(false);
 
-  const setReqQueryCallback = useCallback((currency, timeframe, limit) => {
+  const setReqQueryCallback: SetReqQuery = useCallback((currency, timeframe, limit) => {
     setReqQuery(`?currency=${currency}&timeframe=${timeframe}&limit=${limit}`);
   }, []);
 
-  const clearGetPricesErrorMsg = useCallback(() => {
+  const clearGetPricesErrorMsg: ClearGetPricesErrorMsg = useCallback(() => {
     setGetPricesErrorMsg("");
   }, []);
 
@@ -43,10 +63,10 @@ function useGetPricesOverTime() {
       .then((res) => {
         if (res.status === 200) {
           let customizedData = customizeData(res.data.data.chartData, res.data.data.symbol);
-          if (customizedData.length === 0) {
+          if (customizedData?.length === 0) {
             setGetPricesErrorMsg("No data for your selection");
           }
-          setPriceData(customizedData);
+          setPriceData(customizedData || null);
         }
       })
       .catch((e) => {
@@ -59,5 +79,4 @@ function useGetPricesOverTime() {
   }, [reqQuery]);
 
   return [priceData, loading, getPricesErrorMsg, clearGetPricesErrorMsg, setReqQueryCallback];
-}
-export default useGetPricesOverTime;
+};

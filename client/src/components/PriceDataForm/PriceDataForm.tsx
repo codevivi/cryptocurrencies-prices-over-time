@@ -2,14 +2,19 @@ import { Form, RadioButtonGroup, RadioButton, Loading, Button, Slider } from "@c
 import { useCallback, useContext, useEffect, useState } from "react";
 import { type GlobalContextValue, GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
-import { PriceDataCtx } from "../../context/PriceDataCtx";
+import { type PriceDataContextValue, PriceDataCtx } from "../../context/PriceDataCtx";
+import { FormEvent, SyntheticEvent } from "react";
 import DropdownSearch from "./DropdownSearch/DropdownSearch";
-import useLogUserAction from "../../hooks/useLogUserAction";
+import { ActionToLogDescription, useLogUserAction } from "../../hooks/useLogUserAction";
+export type SetSelectedValueCallback = (code: string | null) => void;
+export type ClearSubmitError = () => void;
+export type SelectedValue = string;
+export type SetSearchToLogOnSubmitCallback = (str: string) => void;
 
 function PriceDataForm() {
   const { timeframes, cryptoCurrencies } = useContext(GlobalCtx) as GlobalContextValue;
-  const { setReqQueryCallback, loadingPriceData } = useContext(PriceDataCtx);
-  const [selectedValue, setSelectedValue] = useState("");
+  const { setReqQueryCallback, loadingPriceData } = useContext(PriceDataCtx) as PriceDataContextValue;
+  const [selectedValue, setSelectedValue] = useState<SelectedValue>("");
   const [timeFramesValue, setTimeframesValue] = useState("");
   const [limit, setLimit] = useState(500);
   const [invalidLimit, setInvalidLimit] = useState(false);
@@ -24,19 +29,19 @@ function PriceDataForm() {
     setTimeframesValue(timeframes[timeframes.length - 1].value);
   }, [timeframes]);
 
-  const setSearchToLogOnSubmitCallback = useCallback((str) => {
+  const setSearchToLogOnSubmitCallback: SetSearchToLogOnSubmitCallback = useCallback((str) => {
     setSearchToLogOnSubmit(str);
   }, []);
 
-  const setSelectedValueCallback = useCallback((code) => {
+  const setSelectedValueCallback: SetSelectedValueCallback = useCallback((code) => {
     setSelectedValue(code || "");
   }, []);
 
-  const clearSubmitError = useCallback(() => {
+  const clearSubmitError: ClearSubmitError = useCallback(() => {
     setSubmitError("");
   }, []);
 
-  const handleSliderChange = (val) => {
+  const handleSliderChange = (val: { value: number | string }) => {
     let value = Number(val.value);
     if (!value || value < 1 || value > 1000 || typeof value !== "number") {
       setInvalidLimit(true);
@@ -46,7 +51,7 @@ function PriceDataForm() {
     setLimit(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (invalidLimit) {
       return;
@@ -58,19 +63,19 @@ function PriceDataForm() {
 
     if (selectedValue) {
       let currency = selectedValue;
-      dispatchActionToLog({ value: currency, description: "selected cryptocurrency" });
+      dispatchActionToLog({ value: currency, description: ActionToLogDescription.SELECTED_CRYPTOCURRENCY });
       setReqQueryCallback(currency, timeFramesValue, limit);
       return;
     }
 
     if (searchToLogOnSubmit) {
-      dispatchActionToLog({ value: searchToLogOnSubmit, description: "searched cryptocurrency" });
+      dispatchActionToLog({ value: searchToLogOnSubmit, description: ActionToLogDescription.SEARCHED_CRYPTOCURRENCY });
     }
     setSubmitError("Select currency from dropdown search matches");
   };
 
-  const handleRadioClick = (e) => {
-    setTimeframesValue(e.target.value);
+  const handleRadioClick = (e: SyntheticEvent<HTMLInputElement>) => {
+    setTimeframesValue(e.currentTarget.value);
   };
 
   return (
