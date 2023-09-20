@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { ContainedList, ContainedListItem, Search } from "@carbon/react";
-import { GlobalCtx } from "../../../context/GlobalCtx";
+import { type GlobalContextValue, GlobalCtx } from "../../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types";
 import { PriceDataCtx } from "../../../context/PriceDataCtx";
@@ -14,7 +14,7 @@ const filterCryptoCurrencies = (searchTerm, currencies) => {
 };
 
 function DropdownSearch({ setSelectedValueCallback, clearSubmitError, selectedValue, setSearchToLogOnSubmitCallback, dispatchActionToLog }) {
-  const { cryptoCurrencies } = useContext(GlobalCtx);
+  const { cryptoCurrencies } = useContext(GlobalCtx) as GlobalContextValue;
   const { clearGetPricesErrorMsg } = useContext(PriceDataCtx);
   const [selectCryptoCurrencies, setSelectCryptoCurrencies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");

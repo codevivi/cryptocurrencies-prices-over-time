@@ -1,13 +1,13 @@
 import { Form, RadioButtonGroup, RadioButton, Loading, Button, Slider } from "@carbon/react";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { GlobalCtx } from "../../context/GlobalCtx";
+import { type GlobalContextValue, GlobalCtx } from "../../context/GlobalCtx";
 import { v4 as uuid } from "uuid";
 import { PriceDataCtx } from "../../context/PriceDataCtx";
 import DropdownSearch from "./DropdownSearch/DropdownSearch";
 import useLogUserAction from "../../hooks/useLogUserAction";
 
 function PriceDataForm() {
-  const { timeframes, cryptoCurrencies } = useContext(GlobalCtx);
+  const { timeframes, cryptoCurrencies } = useContext(GlobalCtx) as GlobalContextValue;
   const { setReqQueryCallback, loadingPriceData } = useContext(PriceDataCtx);
   const [selectedValue, setSelectedValue] = useState("");
   const [timeFramesValue, setTimeframesValue] = useState("");

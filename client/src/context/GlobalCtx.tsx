@@ -1,26 +1,31 @@
 import { createContext, useCallback, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import useGetCryptoCurrencies from "../hooks/useGetCryptoCurrencies";
-import useGetTimeframes from "../hooks/useGetTimeframes";
+import { type CryptoCurrencies, useGetCryptoCurrencies } from "../hooks/useGetCryptoCurrencies.js";
+import { type Timeframes, useGetTimeframes } from "../hooks/useGetTimeframes.js";
 import { ReactNode } from "react";
-export const GlobalCtx = createContext(null);
 
-export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-  const [cryptoCurrencies, getCryptocurrenciesErrorMsg] = useGetCryptoCurrencies();
-  const [timeframes, getTimeframesErrorMsg] = useGetTimeframes();
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+enum ServerErrorMsg {
+  default = "Sorry, can't communicate with server.",
+  empty = "",
+}
 
-  const setErrorMsgCallback = useCallback((msg: string) => {
-    setErrorMsg(msg);
-  }, []);
-
-  useEffect(() => {
-    setErrorMsg(getCryptocurrenciesErrorMsg);
-  }, [getCryptocurrenciesErrorMsg, getTimeframesErrorMsg]);
-
-  return <GlobalCtx.Provider value={{ cryptoCurrencies: cryptoCurrencies, timeframes: timeframes, errorMsg: errorMsg, setErrorMsgCallback: setErrorMsgCallback }}>{children}</GlobalCtx.Provider>;
+export type GlobalContextValue = {
+  cryptoCurrencies: CryptoCurrencies;
+  timeframes: Timeframes;
+  pageErrorMsg: ServerErrorMsg;
 };
 
-GlobalProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+export const GlobalCtx = createContext<GlobalContextValue | null>(null);
+
+export const GlobalProvider = ({ children }: { children: ReactNode }) => {
+  const [cryptoCurrencies, isGetCryptoCurrenciesError] = useGetCryptoCurrencies();
+  const [timeframes, isGetTimeframesError] = useGetTimeframes();
+  const [pageErrorMsg, setPageErrorMsg] = useState<ServerErrorMsg>(ServerErrorMsg.empty);
+
+  useEffect(() => {
+    if (isGetCryptoCurrenciesError || isGetTimeframesError) {
+      setPageErrorMsg(ServerErrorMsg.default);
+    }
+  }, [isGetCryptoCurrenciesError, isGetTimeframesError]);
+
+  return <GlobalCtx.Provider value={{ cryptoCurrencies: cryptoCurrencies, timeframes: timeframes, pageErrorMsg: pageErrorMsg }}>{children}</GlobalCtx.Provider>;
 };
