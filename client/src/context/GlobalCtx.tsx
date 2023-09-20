@@ -2,14 +2,15 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import useGetCryptoCurrencies from "../hooks/useGetCryptoCurrencies";
 import useGetTimeframes from "../hooks/useGetTimeframes";
-export const GlobalCtx = createContext();
+import { ReactNode } from "react";
+export const GlobalCtx = createContext(null);
 
-export const GlobalProvider = ({ children }) => {
+export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [cryptoCurrencies, getCryptocurrenciesErrorMsg] = useGetCryptoCurrencies();
   const [timeframes, getTimeframesErrorMsg] = useGetTimeframes();
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const setErrorMsgCallback = useCallback((msg) => {
+  const setErrorMsgCallback = useCallback((msg: string) => {
     setErrorMsg(msg);
   }, []);
 
