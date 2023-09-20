@@ -2,7 +2,11 @@
 
 ## 📋 About
 
-⚡ Current branch - **aftersubmit** is my try to improve code and probably add/modify functionality after **master** branch was submitted when applying for IBM internship.
+⚡
+
+- **tsc** branch learning, adding typescript to this project
+- **aftersubmit** branch is my try to improve code and probably add/modify functionality after
+- **master** branch was submitted when applying for IBM internship.
 
 This is one page React application with functionality to search/select cryptocurrency and view it's prices over time.
 
