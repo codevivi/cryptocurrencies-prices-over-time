@@ -3,18 +3,17 @@ import { LineChart } from "@carbon/charts-react";
 import { PriceDataCtx } from "../../context/PriceDataCtx";
 import getChartOptions from "./chartOptions";
 import "@carbon/charts/styles.css";
+import { type PriceDataContextValue } from "../../context/PriceDataCtx";
 
 const Chart = () => {
-  const { loadingPriceData, priceData, getPricesErrorMsg } = useContext(PriceDataCtx);
-  const chartRef = useRef();
+  const { loadingPriceData, priceData, getPricesErrorMsg } = useContext(PriceDataCtx) as PriceDataContextValue;
+  const chartRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (loadingPriceData || priceData === null) {
       return;
     }
-    if (chartRef.current) {
-      chartRef.current.scrollIntoView();
-    }
+    chartRef.current?.scrollIntoView();
   }, [loadingPriceData, priceData]);
 
   return (
