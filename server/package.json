@@ -5,10 +5,11 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "tsc": "tsc",
     "build": "tsc",
+    "prestart": "tsc",
     "start": "node dist/server.js",
-    "dev": "concurrently \" tsc --watch\" \"nodemon -q dist/server.js\"",
+    "predev": "tsc",
+    "dev": "concurrently  \"tsc --watch\" \"nodemon -q dist/server.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vilma",
