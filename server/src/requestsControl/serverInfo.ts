@@ -1,4 +1,5 @@
-const serverInfo = (req, res) => {
+import { RequestHandler } from "express";
+const serverInfo: RequestHandler = (req, res) => {
   res.status(200).json({
     type: "success",
     message: "Links to documentation and issues.",

@@ -1,4 +1,4 @@
-import { DATABASE_URL, NODE_ENV } from "../config.js";
+import { DATABASE_URL, NODE_ENV } from "./config.js";
 import mongoose from "mongoose";
 let isDb = false;
 let db = null;

@@ -1,4 +1,4 @@
-import { PORT, CLIENT } from "../config.js";
+import { PORT, CLIENT } from "./config.js";
 import express from "express";
 import cors from "cors";
 import serverInfo from "./requestsControl/serverInfo.js";

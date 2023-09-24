@@ -1,8 +1,21 @@
-import CustomError from "../utils/CustomError.js";
+import { Exchange, Currency, Dictionary } from "ccxt";
 import { getExchange } from "./externalApis.js";
+
 export const defaultExchangeName = "kucoin";
-const defaultExchange = getExchange(defaultExchangeName);
-let loadedTime = null;
+
+type CustomizedCurrency = { id: string; code: string; name: string; displayName: string };
+interface CustomizedExchange extends Exchange {
+  customizedCurrencies?: CustomizedCurrency[];
+}
+
+interface CurrencyMod extends Currency {
+  name?: string;
+  fullName?: string;
+  info?: any;
+}
+
+const defaultExchange: CustomizedExchange = getExchange(defaultExchangeName);
+let loadedTime: null | number = null;
 
 const getPreloadedDefaultExchange = async () => {
   const now = Date.now();
@@ -19,21 +32,23 @@ const getPreloadedDefaultExchange = async () => {
     if (!hasOhlcv) {
       throw new Error("Exchange does not support OHLCV data fetch");
     }
-    defaultExchange.currencies = customizeAndSortCurrencies(currencies);
+    defaultExchange.customizedCurrencies = customizeAndSortCurrencies(currencies);
   }
   return defaultExchange;
 };
 
-function customizeAndSortCurrencies(currencies) {
+type CustomizeAndSortCurrencies = (currencies: Dictionary<Currency>) => CustomizedCurrency[];
+
+const customizeAndSortCurrencies: CustomizeAndSortCurrencies = (currencies) => {
   let currenciesArr = [];
   for (const curr in currencies) {
-    let currency = currencies[curr];
-    let name = currency.name || currency.info.coinName || currency.info.fullName || "";
+    let currency = currencies[curr] as CurrencyMod;
+    let name = currency.name || currency.info?.coinName || currency.info?.fullName || "";
     name = name.trim(); // one for sure was with spaces around and messed up sorting (in kucoin)
-    currenciesArr.push({ id: currency.id, code: currency.code, name: name, displayName: `${currency.name} (${currency.code})` });
+    currenciesArr.push({ id: currency.id, code: currency.code, name: name, displayName: `${name} (${currency.code})` });
   }
   currenciesArr.sort((a, b) => a.name.localeCompare(b.name));
   return currenciesArr;
-}
+};
 
 export default getPreloadedDefaultExchange;

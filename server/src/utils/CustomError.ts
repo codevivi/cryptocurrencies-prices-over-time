@@ -1,16 +1,25 @@
-// error types:
-// 'error' (for server errors and missing implementation),
-// 'failure' (for client errors),
-const validTypes = ["failure", "error"];
+import { StatusCode } from "status-code-enum";
+
+export enum CustomErrorTypes {
+  FAILURE = "Client Error",
+  ERROR = "Server Error",
+}
 
 class CustomError extends Error {
-  constructor(httpErrorCode, type, message) {
+  type: CustomErrorTypes;
+  httpStatusCode: StatusCode;
+  constructor(httpStatusCode: StatusCode, message: string) {
     super(message);
-    this.code = httpErrorCode;
-    if (!validTypes.includes(type)) {
-      throw new Error("invalid Error type, can be 'failure' or 'error'.");
+    if (httpStatusCode < 400) {
+      throw new Error("Valid httpStatusCode for CustomError must be 400 or greater.");
     }
-    this.type = type;
+    if (httpStatusCode < 500) {
+      this.type = CustomErrorTypes.FAILURE;
+    } else {
+      this.type = CustomErrorTypes.ERROR;
+    }
+    this.httpStatusCode = httpStatusCode;
   }
 }
+
 export default CustomError;
