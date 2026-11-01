@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { AsyncRequestHandler } from "../utils/types";
+import { AsyncRequestHandler } from "../utils/types.js";
 
 type AwaitErrorCatcher = (callback: AsyncRequestHandler) => AsyncRequestHandler;
 

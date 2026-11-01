@@ -89,7 +89,7 @@ const DropdownSearch: FunctionComponent<DropdownSearchProps> = ({ setSelectedVal
         className="search"
         label="Cryptocurrency search"
         kind="on-page"
-        action={<Search placeholder="Type and select" isExpanded={true} disabled={cryptoCurrencies !== null ? false : true} value={searchTerm} onChange={handleChange} closeButtonLabelText="Clear search input" size="lg" labelText="Select from search matches" />}>
+        action={<Search className="search-input" placeholder="Type and select currency" isExpanded={true} disabled={cryptoCurrencies !== null ? false : true} value={searchTerm} onChange={handleChange} closeButtonLabelText="Clear search input" size="lg" labelText="Select from search matches" />}>
         <div className="scroll-container">
           {selectCryptoCurrencies &&
             selectCryptoCurrencies.map((listItem) => (

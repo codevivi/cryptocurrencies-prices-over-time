@@ -17,7 +17,7 @@ export const useGetTimeframes = (): [Timeframes, isError] => {
           setTimeframes(res.data.data);
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setIsGetTimeframesError(true);
       });
   }, []);

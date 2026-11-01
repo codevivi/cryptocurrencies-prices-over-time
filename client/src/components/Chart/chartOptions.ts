@@ -1,5 +1,5 @@
 import { type CustomizedPriceData } from "../../hooks/useGetPricesOverTime";
-import { LineChartOptions } from "@carbon/charts";
+import { type LineChartOptions } from "@carbon/charts-react";
 import { ChartTheme, ScaleTypes } from "@carbon/charts";
 const chartOptions: LineChartOptions = {
   title: "Prices over time",

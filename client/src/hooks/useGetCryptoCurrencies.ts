@@ -23,7 +23,7 @@ export const useGetCryptoCurrencies = (): [CryptoCurrencies, isError] => {
           setCryptocurrencies(res.data.data);
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setIsGetCryptoCurrenciesError(true);
       });
   }, []);

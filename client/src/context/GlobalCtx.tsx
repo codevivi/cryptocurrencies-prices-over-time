@@ -1,7 +1,7 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { type CryptoCurrencies, useGetCryptoCurrencies } from "../hooks/useGetCryptoCurrencies.js";
 import { type Timeframes, useGetTimeframes } from "../hooks/useGetTimeframes.js";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 enum ServerErrorMsg {
   default = "Sorry, can't communicate with server.",

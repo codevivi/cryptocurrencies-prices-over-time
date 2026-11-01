@@ -8,11 +8,11 @@ interface CustomizedExchange extends Exchange {
   customizedCurrencies?: CustomizedCurrency[];
 }
 
-interface CurrencyMod extends Currency {
+type CurrencyMod = Currency & {
   name?: string;
   fullName?: string;
   info?: any;
-}
+};
 
 const defaultExchange: CustomizedExchange = getExchange(defaultExchangeName);
 let loadedTime: null | number = null;

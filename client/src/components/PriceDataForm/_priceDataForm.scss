@@ -1,4 +1,4 @@
-@use "@carbon/react/scss/theme";
+@use '@carbon/react/scss/theme';
 .price-data-form {
   display: flex;
   align-items: flex-start;
@@ -18,10 +18,17 @@
   }
   .search {
     width: 100%;
+
     .scroll-container {
       height: fit-content;
       max-height: 400px;
       overflow-y: auto;
+    }
+    .cds--search-magnifier svg {
+      margin-left: 1rem;
+    }
+    input {
+      text-indent: 3rem;
     }
   }
   .cds--radio-button-group {

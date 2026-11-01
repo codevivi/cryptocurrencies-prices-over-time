@@ -15,7 +15,7 @@ const getPriceData: AsyncRequestHandler = async (req, res, next) => {
   const currencies = ex.currencies;
 
   let symbol = `${currency}/USDT`;
-  if (!ex.markets[symbol]) {
+  if (!ex?.markets?.[symbol]) {
     throw new CustomError(StatusCode.ClientErrorNotFound, `Sorry no data for ${currency} in USDT`);
   }
 
